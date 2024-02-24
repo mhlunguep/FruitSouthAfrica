@@ -19,6 +19,12 @@ namespace FruitSouthAfrica.Repositories
             return await connection.QueryAsync<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<T> GetByID<T, U>(string storedProcedure, U id, string connectionId = "DefaultConnection")
+        {
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+            return await connection.QueryFirstOrDefaultAsync<T>(storedProcedure, new { ID = id }, commandType: CommandType.StoredProcedure);
+        }
+
         public async Task SaveData<T>(string storedProcedure, T parameters, string connectionId = "DefaultConnection")
         {
             using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));

@@ -16,6 +16,11 @@ namespace FruitSouthAfrica.Repositories
             // Call the LoadData method with appropriate parameters
             return await _db.LoadData<Product, dynamic>("dbo.GetProducts", new { });
         }
+        public async Task<Product> GetProductByIdAsync(int productId)
+        {
+            // Call the FindByID method with appropriate parameters
+            return await _db.GetByID<Product, int>("dbo.GetProductById", productId);
+        }
 
         public async Task SaveProductAsync(Product product)
         {
