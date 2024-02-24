@@ -1,15 +1,14 @@
 ﻿@model IEnumerable<FruitSouthAfrica.Models.Product>
 
-<h2>Product List</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h2>Product Index</h2>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Product Name</th>
+            <th>Product Code</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Category</th>
             <th>Price</th>
             <th>Actions</th>
         </tr>
@@ -18,10 +17,14 @@
         @foreach (var product in Model)
         {
             <tr>
+                <td>@product.ProductCode</td>
                 <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>@product.CategoryName</td>
                 <td>@product.Price</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@product.ProductId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@product.ProductId">Details</a> |
                     <a asp-action="Delete" asp-route-id="@product.ProductId">Delete</a>
                 </td>
             </tr>
