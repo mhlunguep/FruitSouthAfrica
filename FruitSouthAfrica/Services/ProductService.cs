@@ -3,80 +3,71 @@ using FruitSouthAfrica.Repositories;
 
 namespace FruitSouthAfrica.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
-        private readonly IRepository<Product> _productRepository;
+        private readonly IProductRepository _productRepository;
 
-        public ProductService(IRepository<Product> productRepository)
+        public ProductService(IProductRepository productRepository)
         {
-            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+            _productRepository = productRepository;
         }
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             try
             {
-                return await _productRepository.GetAllAsync();
+                return await _productRepository.GetAllProductsAsync();
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as appropriate
-                throw;
+                // Log the exception
+                Console.WriteLine($"An error occurred while retrieving products: {ex.Message}");
+                throw; // Re-throw the exception for the caller to handle
             }
         }
 
-        public async Task<Product> GetProductByIdAsync(int id)
+        public async Task AddProductAsync(Product product)
         {
             try
             {
-                return await _productRepository.GetByIdAsync(id);
+                // Add your business logic here, if needed
+                await _productRepository.SaveProductAsync(product);
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as appropriate
-                throw;
+                // Log the exception
+                Console.WriteLine($"An error occurred while adding the product: {ex.Message}");
+                throw; // Re-throw the exception for the caller to handle
             }
         }
 
-        public async Task<int> AddProductAsync(Product product)
+        public async Task UpdateProductAsync(Product product)
         {
             try
             {
-                // Perform any validation or business logic here if needed
-                return await _productRepository.AddAsync(product);
+                // Add your business logic here, if needed
+                await _productRepository.UpdateProductAsync(product);
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as appropriate
-                throw;
+                // Log the exception
+                Console.WriteLine($"An error occurred while updating the product: {ex.Message}");
+                throw; // Re-throw the exception for the caller to handle
             }
         }
 
-        public async Task<int> UpdateProductAsync(Product product)
+        public async Task DeleteProductAsync(int productId)
         {
             try
             {
-                // Perform any validation or business logic here if needed
-                return await _productRepository.UpdateAsync(product);
+                // Add your business logic here, if needed
+                await _productRepository.DeleteProductAsync(productId);
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as appropriate
-                throw;
-            }
-        }
-
-        public async Task<int> DeleteProductAsync(int id)
-        {
-            try
-            {
-                // Check if the product exists or perform any other validation if needed
-                return await _productRepository.DeleteAsync(id);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as appropriate
-                throw;
+                // Log the exception
+                Console.WriteLine($"An error occurred while deleting the product: {ex.Message}");
+                throw; // Re-throw the exception for the caller to handle
             }
         }
     }

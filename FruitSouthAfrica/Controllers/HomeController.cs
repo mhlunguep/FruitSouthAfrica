@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FruitSouthAfrica.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace FruitSouthAfrica.Controllers

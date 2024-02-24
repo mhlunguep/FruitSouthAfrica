@@ -4,55 +4,36 @@ using System.Data;
 
 namespace FruitSouthAfrica.Repositories
 {
-    public class Repository<T>
+    public class Repository : IRepository
     {
-        private readonly string _connectionString;
+        private readonly IConfiguration _config;
 
-        public Repository(string connectionString)
+        public Repository(IConfiguration config)
         {
-            _connectionString = connectionString;
+            _config = config;
         }
 
-        public IDbConnection Connection => new SqlConnection(_connectionString);
-
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> LoadData<T, U>(string storedProcedure, U parameters, string connectionId = "DefaultConnection")
         {
-            using IDbConnection dbConnection = Connection;
-            dbConnection.Open();
-            return await dbConnection.QueryAsync<T>("YourStoredProcedureName", commandType: CommandType.StoredProcedure);
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+            return await connection.QueryAsync<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task SaveData<T>(string storedProcedure, T parameters, string connectionId = "DefaultConnection")
         {
-            using IDbConnection dbConnection = Connection;
-            dbConnection.Open();
-            var parameters = new { Id = id };
-            return await dbConnection.QueryFirstOrDefaultAsync<T>("YourStoredProcedureName", parameters, commandType: CommandType.StoredProcedure);
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+            await connection.QueryAsync<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+        }
+        public async Task UpdateData<T>(string storedProcedure, T parameters, string connectionId = "DefaultConnection")
+        {
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+            await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<int> AddAsync(T entity)
+        public async Task DeleteData<T>(string storedProcedure, T parameters, string connectionId = "DefaultConnection")
         {
-            using IDbConnection dbConnection = Connection;
-            dbConnection.Open();
-            var parameters = new DynamicParameters(entity);
-            return await dbConnection.ExecuteAsync("YourStoredProcedureName", parameters, commandType: CommandType.StoredProcedure);
-        }
-
-        public async Task<int> UpdateAsync(T entity)
-        {
-            using IDbConnection dbConnection = Connection;
-            dbConnection.Open();
-            var parameters = new DynamicParameters(entity);
-            return await dbConnection.ExecuteAsync("YourStoredProcedureName", parameters, commandType: CommandType.StoredProcedure);
-        }
-
-        public async Task<int> DeleteAsync(int id)
-        {
-            using IDbConnection dbConnection = Connection;
-            dbConnection.Open();
-            var parameters = new { Id = id };
-            return await dbConnection.ExecuteAsync("YourStoredProcedureName", parameters, commandType: CommandType.StoredProcedure);
+            using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+            await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
         }
     }
-
 }

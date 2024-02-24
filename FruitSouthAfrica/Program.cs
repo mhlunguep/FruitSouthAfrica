@@ -1,6 +1,7 @@
 using FruitSouthAfrica.Data;
 using FruitSouthAfrica.Models;
 using FruitSouthAfrica.Repositories;
+using FruitSouthAfrica.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +24,9 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-
+builder.Services.AddSingleton<IRepository, Repository>();
+builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton<IProductService, ProductService>();
 
 
 var app = builder.Build();
