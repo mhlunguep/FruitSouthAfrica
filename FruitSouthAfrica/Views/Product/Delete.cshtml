@@ -1,0 +1,37 @@
+﻿@model FruitSouthAfrica.Models.Product
+
+<h2>Delete Product</h2>
+
+<div>
+    <h4>Are you sure you want to delete this product?</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProductCode)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <!-- Add other fields you want to display -->
+        <!-- You can also display the image if needed -->
+        <dt class="col-sm-2">
+            Image
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.Image" alt="Product Image" class="img-thumbnail" style="max-width: 200px;" />
+        </dd>
+    </dl>
+
+    <form asp-action="Delete" asp-route-id="@Model.ProductId" method="post">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </form>
+</div>
