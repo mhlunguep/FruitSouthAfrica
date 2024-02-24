@@ -1,5 +1,6 @@
 ﻿using FruitSouthAfrica.Models;
 using FruitSouthAfrica.Repositories;
+using System;
 
 namespace FruitSouthAfrica.Services
 {
@@ -22,6 +23,21 @@ namespace FruitSouthAfrica.Services
             {
                 // Log the exception
                 Console.WriteLine($"An error occurred while retrieving products: {ex.Message}");
+                throw; // Re-throw the exception for the caller to handle
+            }
+        }
+
+        public async Task<Product> GetProductByIdAsync(int productId)
+        {
+            try
+            {
+                // Retrieve the product by its ID
+                return await _productRepository.GetProductByIdAsync(productId);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.WriteLine($"An error occurred while retrieving the product: {ex.Message}");
                 throw; // Re-throw the exception for the caller to handle
             }
         }

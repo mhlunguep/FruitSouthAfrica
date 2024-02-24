@@ -7,6 +7,7 @@ namespace FruitSouthAfrica.Services
         Task AddProductAsync(Product product);
         Task DeleteProductAsync(int productId);
         Task<IEnumerable<Product>> GetAllProductsAsync();
+        Task<Product> GetProductByIdAsync(int productId);
         Task UpdateProductAsync(Product product);
     }
 }
